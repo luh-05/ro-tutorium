@@ -1,5 +1,5 @@
 <script setup>
-import { inject, computed } from 'vue'
+import { inject, computed, ref, onMounted } from 'vue'
 
 const props = defineProps({
   when: { type: String, requried: true }
@@ -24,8 +24,6 @@ const visible = computed(() => {
 
 <template>
 <li :value=index v-if=visible :key=index :style="`view-transition-name: item-al-${index}`">
-
 <slot></slot>
-
 </li>
 </template>

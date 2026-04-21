@@ -29,3 +29,7 @@ ol.preserved-order li::before {
   top: -0.2rem;
   font-weight: normal;
 }
+
+.v-card-text p {
+  margin-top: 0;
+}
