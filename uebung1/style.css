@@ -33,3 +33,7 @@ ol.preserved-order li::before {
 .v-card-text p {
   margin-top: 0;
 }
+
+.decreased-line-height table {
+    line-height:0em !important;
+  }

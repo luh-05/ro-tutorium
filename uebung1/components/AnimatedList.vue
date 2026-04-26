@@ -2,7 +2,7 @@
 import { ref, watch, provide } from 'vue'
 import { useNav, onSlideEnter, onSlideLeave, sharedState } from '@slidev/client'
 
-const { clicks, clicksDirection, navDirection, total } = useNav()
+const { clicks, clicksDirection } = useNav()
 const current = ref(0)
 const nextIndex = ref(1)
 provide('al:current', current)
@@ -23,11 +23,18 @@ function startTransition(val) {
 var unwatch = null
 
 onSlideEnter(() => {
+  // manually trigger transition in case a harsh entry happened
+  // use raw value to avoid becoming an observer
+  if (current._value != clicks._value) {
+    document.startViewTransition(() => {
+      current.value = clicks.value
+    })
+  }
+
+  // register watcher for clicks
   unwatch = watch(clicks, (val) => {
     startTransition(val)
   })
-  //console.log(total.value)
-  //if (navDirection.value > 1) startTransition(clicks.value)
 }) 
 
 onSlideLeave(() => {

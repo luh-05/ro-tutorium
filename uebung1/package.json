@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@comark/vue": "latest",
+    "@katzumi/slidev-addon-qrcode": "^0.0.17",
     "@slidev/cli": "^52.14.2",
     "@slidev/theme-default": "latest",
     "@slidev/theme-seriph": "latest",
@@ -19,7 +20,7 @@
     "slidev-addon-vuetify": "^0.2.1",
     "slidev-addon-window-mockup": "^0.3.1",
     "slidev-component-zoom": "^1.1.0",
-    "vue": "^3.5.32"
+    "vue": "^3.5.33"
   },
   "devDependencies": {
     "@iconify-json/streamline-plump-color": "^1.2.2",
