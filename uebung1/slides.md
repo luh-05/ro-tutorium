@@ -33,6 +33,11 @@ addons:
 # Gruppenübung 1
 ## Assembler & Speicher
 
+<footer class="absolute bottom-0 right-0">
+
+By Lasse Hüffler
+</footer>
+
 ---
 clicks: 8
 ---
