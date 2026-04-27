@@ -39,7 +39,7 @@ By Lasse Hüffler
 </footer>
 
 ---
-clicks: 8
+clicks: 6
 ---
 
 # Aufgabe 1.1 - Theoriefragen {class=title-accent}
@@ -62,14 +62,7 @@ __Wie viele Wörter lassen sich maximal adressieren, wenn die Adresse vier Byte 
 <!--c)-->
 <AnimatedListEntry when="current % 2 === 0 || current === 2 * 2 + 1">
 
-Was unterscheidet einen __logischen Rechtsshift__ von einem __arithmetischen Rechtsschift__?
-</AnimatedListEntry>
-
-<!--d)-->
-<AnimatedListEntry when="current % 2 === 0 || current === 3 * 2 + 1">
-
-Mit I-Typ Befehlen können __12 bit__ Direktwerte (Immediates) verwendet werden.  
-__Wie können auch größere Konstanten im Programm verwendet werden?__
+Aus welchem Grund nutzt die Instruktion `sw` (store word) das Befehlsformat **S-Typ** und `lw` (load word) das Format **I-Typ**?
 </AnimatedListEntry>
 
 
@@ -121,29 +114,12 @@ $2^{32} = 4294967296$
 <template v-slot:title><span>Musterlösung</span></template>
 <v-card-text>
 
-Bei logischen Rechtsshifts werden die linksseitigen Bits mit 0 aufgefüllt.
-Bei arithmetischen Rechtsshifts werden die linksseitigen Bits mit dem Wert des Most Significant Bit (msb) aufgefüllt. Somit bleibt bei Zahlen, die als Zweier-Komplement dargestellt sind, das Vorzeichen erhalten.
-</v-card-text>
-</v-card>
-</AnimatedListEntry>
+`sw` benötigt rs2 und enthält anstelle von rd die untere fünf Bit des Offsets (Immediate);  
+`lw` benötigt rd und enthält die unteren fünf Immediate-Bits anstelle von rs2.
 
-<!--lösung d) -->
-<AnimatedListEntry style="list-style-type: none; !important" when="current === 3 * 2 + 1">
-<v-card
-  subtitle="1.1d"
-  width="100%"
->
-<template v-slot:prepend><v-icon><div class="i-streamline-plump-color:class-lesson-flat"></div></v-icon></template>
-<template v-slot:title><span>Musterlösung</span></template>
-<v-card-text>
-
-Durch das Nutzen der Instruktionen _lui_ und _addi_ können beliebige __32 bit__ Werte mit 2 Befehlen geladen werden
-
-```riscv
-lui t0, value[31:12] # lade obere 20 bit
-addi t0, t0, value[11:0] # lade untere 12 bit
-li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen Instruktionen ersetzt
-```
+Erklärung: Sowohl sw als auch lw lesen eine Basisadresse aus einem Register. Dessen Adresse wird in rs1 angegeben.
+Die Instruktion sw speichert im Gegensatz zu lw aber keinen Wert in ein Register (rd). Stattdessen benötigt sie einen Wert, der in den Speicher geschrieben werden soll; diesen liest sie aus einem weiteren Register (rs2).
+Die unterschiedlichen Formate werden genutzt, um die Bits von rs2 bzw. rd stattdessen für einen Teil des Offsets nutzen zu können. Sonst wäre der mögliche Bereich des Offset-Werts um den Faktor 25 = 32 kleiner.
 </v-card-text>
 </v-card>
 </AnimatedListEntry>
@@ -173,11 +149,6 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 <li>
 <code class="width-500" v-mark.box.green="7">jal ra, 32</code>
 <code v-click="8" style="margin-left:0.7em; font-size:0.6em">00000010000000000000 00001<code class="color-green">1101111</code></code>
-</li>
-<li>
-<code class="width-500" v-mark.box.cyan="10">li t3, 4097</code>
-<p class="absolute left-50 top-53"><code v-click="11" style="margin-left:0.7em; font-size:0.6em">00000000000000000001 11100<code class="color-cyan">0110111</code></code></p>
-<p class="absolute left-50 top-58"><code v-click="9" style="margin-left:0.7em; font-size:0.6em">000000000001 11100 000 11100<code class="color-orange">0010011</code></code></p>
 </li>
 </ul>
 </div>
@@ -224,13 +195,6 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 <td>J</td>
 <td v-mark.underline.green="7" style="font-size:0.8em">jal rd, label</td>
 </tr>
-<tr v-click="10">
-<td><code>0110111</code></td>
-<td></td>
-<td></td>
-<td>U</td>
-<td v-mark.underline.cyan="10" style="font-size:0.8em">lui rd, upimm</td>
-</tr>
 </tbody>
 </table>
 
@@ -268,7 +232,7 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 <div class="" >
 <div>
 <ul class=letter-list style="font-size:0.85em">
-<li>
+<li value=5>
 <code class="width-500" v-mark.box.red="1">01000000_00000001_00100011_00000011</code>
 <code v-click="2" style="margin-left:0.7em; font-size:0.75em"><code class="color-red">lw</code> t1, 1024(sp)</code>
 </li>
@@ -283,10 +247,6 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 <li>
 <code class="width-500" v-mark.box.green="7">00000000_01010101_01010101_00110111</code>
 <code v-click="8" style="margin-left:0.7em; font-size:0.75em"><code class="color-green">lui</code> a0, 1365</code>
-</li>
-<li>
-<code class="width-500" v-mark.box.cyan="9">00000011_00000000_00000000_01101111</code>
-<code v-click="10" style="margin-left:0.7em; font-size:0.75em"><code class="color-cyan">jal</code> x0, 48</code>
 </li>
 </ul>
 </div>
@@ -333,13 +293,6 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 <td>U</td>
 <td v-mark.underline.green="7" style="font-size:0.8em">lui rd, upimm</td>
 </tr>
-<tr v-click="9">
-<td><code>1101111</code></td>
-<td></td>
-<td></td>
-<td>J</td>
-<td v-mark.underline.cyan="9" style="font-size:0.8em">jal rd, label</td>
-</tr>
 </tbody>
 </table>
 
@@ -367,7 +320,7 @@ li t0, value # Pseudo-Instruktion li wird im Hintergrund durch die beiden oberen
 </style>
 
 ---
-clicks: 28
+clicks: 12
 ---
 # Aufgabe 1.3 Assemblerprogrammierung {class=title-accent}
 ### Unteraufgabe a)
@@ -381,26 +334,17 @@ clicks: 28
 <li :class="($clicks === 0 || ($clicks > 1 && $clicks < 3)) ? 'opacity-100' : 'opacity-30'">
 <code>a = a + 1;</code>
 </li>
-<li :class="($clicks === 0 || ($clicks > 2 && $clicks < 6)) ? 'opacity-100' : 'opacity-30'">
+<li :class="($clicks === 0 || ($clicks > 2 && $clicks < 4)) ? 'opacity-100' : 'opacity-30'">
+<code>a = a + b</code>
+</li>
+<li :class="($clicks === 0 || ($clicks > 3 && $clicks < 7)) ? 'opacity-100' : 'opacity-30'">
 <code>a = b - c - 1;</code>
 </li>
-<li :class="($clicks === 0 || ($clicks > 5 && $clicks < 9)) ? 'opacity-100' : 'opacity-30'">
+<li :class="($clicks === 0 || ($clicks > 6 && $clicks < 10)) ? 'opacity-100' : 'opacity-30'">
 <code>b = (b | 42) + c;</code>
 </li>
-<li :class="($clicks === 0 || ($clicks > 8 && $clicks < 13)) ? 'opacity-100' : 'opacity-30'">
-<code>e = b >= (c + 5);</code>
-</li>
-<li :class="($clicks === 0 || ($clicks > 12 && $clicks < 16)) ? 'opacity-100' : 'opacity-30'">
-<code>c = b + 123456;</code>
-</li>
-<li :class="($clicks === 0 || ($clicks > 15 && $clicks < 19)) ? 'opacity-100' : 'opacity-30'">
+<li :class="($clicks === 0 || ($clicks > 9)) ? 'opacity-100' : 'opacity-30'">
 <code>a = b & c & d;</code>
-</li>
-<li :class="($clicks === 0 || ($clicks > 18 && $clicks < 24)) ? 'opacity-100' : 'opacity-30'">
-<code>b = b << (5 + 3);</code>
-</li>
-<li :class="($clicks === 0 || ($clicks > 23)) ? 'opacity-100' : 'opacity-30'">
-<code>d = (e == 0) ? c : (c + 1);</code>
 </li>
 </ul>
 </div>
@@ -418,60 +362,31 @@ addi a3, zero, 100 # c = 100
 addi a1, a1, 1 # a = a + 1
 ```
 </div>
-<div v-if="$clicks > 2 && $clicks < 6">
+<div v-if="$clicks > 2 && $clicks < 4">
 
-```riscv {*|1|2}{at:4}
+```riscv
+add a1, a1, a2 # a = a + b
+```
+</div>
+<div v-if="$clicks > 3 && $clicks < 7">
+
+```riscv {*|1|2}{at:5}
 sub t0, a2, a3 # t0 = b - c
 addi a1, t0, -1 # a = t0 - 1
 ```
 </div>
-<div v-if="$clicks > 5 && $clicks < 9">
+<div v-if="$clicks > 6 && $clicks < 10">
 
-```riscv {*|1|2}{at:7}
+```riscv {*|1|2|3}{at:8}
 ori t0, a2, 42 # t0 = b | 42
 add a2, t0, a3 # b = t0 + c
 ```
 </div>
-<div v-if="$clicks > 8 && $clicks < 13">
+<div v-if="$clicks > 9">
 
-```riscv {*|1|2|3}{at:10}
-addi t0, a3, 5 # t0 = c + 5
-slt t0, a2, t0 # b = t0 < b
-xor a5, t0, 1 # e = ~t0
-```
-</div>
-<div v-if="$clicks > 12 && $clicks < 16">
-
-```riscv {*|1|2}{at:14}
-li t0, 123456 # t0 = 123456 (lui+addi)
-add a3, a2, t0 # c = b + t0
-```
-</div>
-<div v-if="$clicks > 15 && $clicks < 19">
-
-```riscv {*|1|2}{at:17}
+```riscv {*|1|2}{at:11}
 and t0, a2, a3 # t0 = b & c
 and a1, t0, a4 # a = t0 & d
-```
-</div>
-<div v-if="$clicks > 18 && $clicks < 24">
-
-```riscv {*|1|2|3|4}{at:20}
-addi t0, zero, 5 # t0 = 5
-addi t1, zero, 3 # t1 = 3
-add t2, t0, t1 # t2 = t0 + t1
-sll a2, a2, t2 # b = b << t2
-```
-</div>
-<div v-if="$clicks > 23">
-
-```riscv {*|1,4,|5|2|3,6}{at:25}
-bne a5, zero, label1 # jump if e == 0
-add a4, a3, zero # d = c
-jal zero, label2 # jump to end
-label1:
-addi a4, a3, 1 # d = c + 1
-label2:
 ```
 </div>
 </div>
@@ -479,11 +394,11 @@ label2:
 
 ---
 
-# Aufgabe 1.3 Assemblerprogrammierung {class=title-accent}
+# Aufgabe 1.4 Speicherzugriffe {class=title-accent}
 <div grid="~ cols-2">
 <div>
 
-### Unteraufgabe b) 1.
+### Unteraufgabe a) 1.
 
 ![alt text](./imgs/image.png)
 </div>
@@ -492,11 +407,11 @@ label2:
 ```riscv {*|1|2|3|4|5|6|7|8|*}
 lw a0, 0x00(zero)
 sb a0, 0x03(zero)
-srli a0, a0, 8
+addi a0, a0, 8
 sb a0, 0x02(zero)
-srli a0, a0, 8
+addi a0, a0, 8
 sb a0, 0x01(zero)
-srli a0, a0, 8
+addi a0, a0, 8
 sb a0, 0x00(zero)
 ```
 </div>
@@ -523,7 +438,7 @@ sb a0, 0x00(zero)
 </tr>
 <tr v-click=4>
 <td><code>sb a0, 0x02(zero)</code></td>
-<td><code>mem[0x02] = 3</code></td>
+<td><code>mem[0x02] = 9</code></td>
 </tr>
 <tr v-click=5>
 <td><code>srli a0, a0, 8</code></td>
@@ -531,7 +446,7 @@ sb a0, 0x00(zero)
 </tr>
 <tr v-click=6>
 <td><code>sb a0, 0x01(zero)</code></td>
-<td><code>mem[0x01] = 7</code></td>
+<td><code>mem[0x01] = 8</code></td>
 </tr>
 <tr v-click=7>
 <td><code>srli a0, a0, 8</code></td>
@@ -539,7 +454,7 @@ sb a0, 0x00(zero)
 </tr>
 <tr v-click=8>
 <td><code>sb a0, 0x00(zero)</code></td>
-<td><code>mem[0x00] = 15</code></td>
+<td><code>mem[0x00] = 16</code></td>
 </tr>
 </tbody>
 </table>
@@ -549,11 +464,11 @@ sb a0, 0x00(zero)
 
 ---
 
-# Aufgabe 1.3 Assemblerprogrammierung {class=title-accent}
+# Aufgabe 1.4 Speicherzugriffe {class=title-accent}
 <div grid="~ cols-2">
 <div>
 
-### Unteraufgabe b) 2.
+### Unteraufgabe a) 2.
 
 ![alt text](./imgs/image.png)
 </div>
@@ -592,7 +507,7 @@ sw zero, 0x04(a3)
 </tr>
 <tr v-click=4>
 <td><code>sw a2, 0x00(a0)</code></td>
-<td><code>mem[0x14..0x17] = 155</code></td>
+<td><code>mem[0x14..0x17] = 255</code></td>
 </tr>
 <tr v-click=5>
 <td><code>addi a3, a2, 13</code></td>
@@ -609,221 +524,6 @@ sw zero, 0x04(a3)
 </tbody>
 </table>
 </div>
-</div>
-</div>
-
----
-
-# Aufgabe 1.3 Assemblerprogrammierung {class=title-accent}
-<div grid="~ cols-[13em_auto]">
-<div>
-
-### Unteraufgabe c) 1.
-
-```riscv {*|1|2|4,7|5|6,3|4,7|5|6,3|4,7|5|6,3|4,7|8|*}
-addi t1, zero, 7
-addi t0, zero, 1
-start:
-blt t1, t0, end
-add t0, t0, t0
-jal zero, start
-end:
-srli t0, t0, 1
-```
-</div>
-<div class="decreased-line-height" style="margin-left:1em;">
-<table>
-<thead>
-<tr>
-<td>Takt</td>
-<td>Instruktion</td>
-<td>Zielregister</td>
-<td>Neuer Programmzähler</td>
-</tr>
-</thead>
-<tbody>
-<tr v-click=1>
-<td>0</td>
-<td><code>addi t0, zero, 4</code></td>
-<td><code>t1 = 7</code></td>
-<td>4</td>
-</tr>
-<tr v-click=2>
-<td>1</td>
-<td><code>addi t0, zero, 1</code></td>
-<td><code>t0 = 1</code></td>
-<td>8</td>
-</tr>
-<tr v-click=3>
-<td>2</td>
-<td><code>blt t1, t0, end </code></td>
-<td></td>
-<td>12</td>
-</tr>
-<tr v-click=4>
-<td>3</td>
-<td><code>add t0, t0, t0</code></td>
-<td><code>t0 = 2</code></td>
-<td>16</td>
-</tr>
-<tr v-click=5>
-<td>4</td>
-<td><code>jal zero, start</code></td>
-<td></td>
-<td>8</td>
-</tr>
-<tr v-click=6>
-<td>5</td>
-<td><code>blt t1, t0, end</code></td>
-<td></td>
-<td>12</td>
-</tr>
-<tr v-click=7>
-<td>6</td>
-<td><code>add t0, t0, t0</code></td>
-<td><code>t0 = 4</code></td>
-<td>16</td>
-</tr>
-<tr v-click=8>
-<td>7</td>
-<td><code>jal zero, start</code></td>
-<td></td>
-<td>8</td>
-</tr>
-<tr v-click=9>
-<td>8</td>
-<td><code>blt t1, t0, end</code></td>
-<td></td>
-<td>12</td>
-</tr>
-<tr v-click=10>
-<td>9</td>
-<td><code>add t0, t0, t0</code></td>
-<td><code>t0 = 8</code></td>
-<td>16</td>
-</tr>
-<tr v-click=11>
-<td>10</td>
-<td><code>jal zero, start </code></td>
-<td></td>
-<td>8</td>
-</tr>
-<tr v-click=12>
-<td>11</td>
-<td><code>blt t1, t0, end</code></td>
-<td></td>
-<td>20</td>
-</tr>
-<tr v-click=13>
-<td>12</td>
-<td><code>srli t0, t0, 1</code></td>
-<td><code>t0 = 4</code></td>
-<td>24</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
----
-
-# Aufgabe 1.3 Assemblerprogrammierung {class=title-accent}
-<div grid="~ cols-[13em_auto]">
-<div>
-
-### Unteraufgabe c) 2.
-
-```riscv {*|1|2|4,7|5|6|4,7|5|6|4,7|8|9,3|*}
-addi a0, zero, 12
-addi a1, zero, 8
-label1:
-bge a1, a0, label2
-sub a0, a0, a1
-jalr zero, a1, 0
-label2:
-sub a1, a1, a0
-bne a1, zero, label1
-```
-</div>
-<div class="decreased-line-height" style="margin-left:1em;">
-<table>
-<thead>
-<tr>
-<td>Takt</td>
-<td>Instruktion</td>
-<td>Zielregister</td>
-<td>Neuer Programmzähler</td>
-</tr>
-</thead>
-<tbody>
-<tr v-click=1>
-<td>0</td>
-<td><code>addi a0, zero</code></td>
-<td><code>a0 = 12</code></td>
-<td>4</td>
-</tr>
-<tr v-click=2>
-<td>1</td>
-<td><code>addi a1, zero</code></td>
-<td><code>a1 = 8</code></td>
-<td>8</td>
-</tr>
-<tr v-click=3>
-<td>2</td>
-<td><code>bge a1, a0, label2</code></td>
-<td></td>
-<td>12</td>
-</tr>
-<tr v-click=4>
-<td>3</td>
-<td><code>sub a0, a0, a1</code></td>
-<td><code>a0 = 4</code></td>
-<td>16</td>
-</tr>
-<tr v-click=5>
-<td>4</td>
-<td><code>jalr zero, a1</code></td>
-<td></td>
-<td>8</td>
-</tr>
-<tr v-click=6>
-<td>5</td>
-<td><code>bge a1, a0, label2</code></td>
-<td></td>
-<td>20</td>
-</tr>
-<tr v-click=7>
-<td>6</td>
-<td><code>sub a1, a1, a0</code></td>
-<td><code>a1 = 4</code></td>
-<td>24</td>
-</tr>
-<tr v-click=8>
-<td>7</td>
-<td><code>bne a1, zero, label1</code></td>
-<td></td>
-<td>8</td>
-</tr>
-<tr v-click=9>
-<td>8</td>
-<td><code>bge a1, a0, label2</code></td>
-<td></td>
-<td>20</td>
-</tr>
-<tr v-click=10>
-<td>9</td>
-<td><code>sub a1, a1, a0</code></td>
-<td><code>a1 = 0</code></td>
-<td>24</td>
-</tr>
-<tr v-click=11>
-<td>10</td>
-<td><code>bne a1, zero, label1</code></td>
-<td></td>
-<td>28</td>
-</tr>
-</tbody>
-</table>
 </div>
 </div>
 
