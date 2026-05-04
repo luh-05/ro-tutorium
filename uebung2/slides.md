@@ -153,7 +153,7 @@ sll a2, a2, t2 # b = b << t2
 <div v-if="$clicks > 16 && $clicks < 22">
 
 ```riscv {*|1,4,|5|2|3,6}{at:18}
-bne a5, zero, label1 # jump if e == 0
+bne a5, zero, label1 # jump if e != 0
 add a4, a3, zero # d = c
 jal zero, label2 # jump to end
 label1:
