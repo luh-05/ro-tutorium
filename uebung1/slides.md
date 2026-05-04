@@ -398,7 +398,7 @@ and a1, t0, a4 # a = t0 & d
 <div grid="~ cols-2">
 <div>
 
-### Unteraufgabe a) 1.
+### a) Direkte Zugriffe 1.
 
 ![alt text](./imgs/image.png)
 </div>
@@ -468,7 +468,7 @@ sb a0, 0x00(zero)
 <div grid="~ cols-2">
 <div>
 
-### Unteraufgabe a) 2.
+### a) Direkte Zugriffe 2.
 
 ![alt text](./imgs/image.png)
 </div>
@@ -526,6 +526,8 @@ sw zero, 0x04(a3)
 </div>
 </div>
 </div>
+
+---
 
 ---
 

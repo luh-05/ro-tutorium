@@ -1,0 +1,29 @@
+{
+  "name": "uebung2",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "slidev build",
+    "dev": "slidev",
+    "export": "slidev export"
+  },
+  "dependencies": {
+    "@comark/vue": "latest",
+    "@katzumi/slidev-addon-qrcode": "^0.0.17",
+    "@slidev/cli": "^52.14.2",
+    "@slidev/theme-default": "latest",
+    "@slidev/theme-seriph": "latest",
+    "slidev-addon-cpp-runner": "^0.1.2",
+    "slidev-addon-fancy-arrow": "^0.16.1",
+    "slidev-addon-tldraw": "^0.5.1",
+    "slidev-addon-typst": "^1.0.2",
+    "slidev-addon-vuetify": "^0.2.1",
+    "slidev-addon-window-mockup": "^0.3.1",
+    "slidev-component-zoom": "^1.1.0",
+    "vue": "^3.5.33"
+  },
+  "devDependencies": {
+    "@iconify-json/streamline-plump-color": "^1.2.2",
+    "@unocss/preset-icons": "^66.6.8"
+  }
+}
